@@ -174,7 +174,7 @@ class Matriu():
         self.dades = [fila[:] for fila in llista_de_llistes]
      
     def __repr__(self):
-        return '\n'.join(' '.join(str(num) for num in fila) for fila in self.dades)
+        return '\n'.join(' '.join(f'{num:3}'(num) for num in fila) for fila in self.dades)
     
     def __add__(self, other):
         dades = []
