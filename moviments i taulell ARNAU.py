@@ -84,6 +84,70 @@ def crea_taulell(quadrat1,quadrat2,quadrat3,quadrat4) -> List[List[Tuple[int, st
         
     return quadratsrotats
 
+def crear_taulells_possibles(quadrat1,quadrat2,quadrat3,quadrat4):
+    copsq1 = 0
+    copsq2 = 0
+    copsq3 = 0
+    copsq4 = 0
+    taulells = []
+    q1 = [quadrat1, rota_quadrat(quadrat1),rota_quadrat(rota_quadrat(quadrat1)),rota_quadrat(rota_quadrat(rota_quadrat(quadrat1)))]
+    q2 = [quadrat2, rota_quadrat(quadrat2),rota_quadrat(rota_quadrat(quadrat2)),rota_quadrat(rota_quadrat(rota_quadrat(quadrat2)))]
+    q3 = [quadrat3, rota_quadrat(quadrat3),rota_quadrat(rota_quadrat(quadrat3)),rota_quadrat(rota_quadrat(rota_quadrat(quadrat3)))]
+    q4 = [quadrat4, rota_quadrat(quadrat4),rota_quadrat(rota_quadrat(quadrat4)),rota_quadrat(rota_quadrat(rota_quadrat(quadrat4)))]
+    quadrats = [q1,q2,q3,q4]
+    tots = [[x1,x2,x3,x4] for x1 in q1 + q2 + q3 + q4 for x2 in q1 + q2 + q3 + q4 for x3 in q1 + q2 + q3 + q4 for x4 in q1 + q2 + q3 + q4 if x1 != x2 and x1 != x3 and x1 != x4 and x2 != x3 and x2 != x4 and x3 != x4]
+
+    for taulell in tots:
+        copsq1 = 0
+        copsq2 = 0
+        copsq3 = 0
+        copsq4 = 0
+        for quadrat in taulell:
+            if quadrat in q1:
+                copsq1 += 1
+            elif quadrat in q2:
+                copsq2 += 1
+            elif quadrat in q3:
+                copsq3 += 1
+            elif quadrat in q4:
+                copsq4 += 1
+        if copsq1 == 1 and copsq2 == 1 and copsq3 == 1 and copsq4 == 1:
+            taulells.append(taulell)
+    print (len(taulells))
+    return taulells
+#     tots = [(x1,x2,x3,x4) for x1 in q1 + q2 + q3 + q4 for x2 in q1 + q2 + q3 + q4 for x3 in q1 + q2 + q3 + q4 for x4 in q1 + q2 + q3 + q4 if x1 != x2 and x1 != x3 and x1 != x4 and x2 != x3 and x2 != x4 and x3 != x4]
+#     for taulell in tots:
+#         for q in quadrats:
+#             for variant in q1:
+#                 if variant in taulell:
+#                     nvariants1 += 1
+#                     if nvariants1 >= 2:
+#                         tots.remove(taulell)
+#                         nvariants1 = 0
+#                     else:
+#                         nvariant1 = 0
+#                         continue
+#     print (len(tots))
+#     return tots
+
+crear_taulells_possibles([[(2,'y'),(1,'w'),(1,'b')],
+            [(2,'w'),(2,'g'),(2,'r')],
+            [(4,'p'),(6,'g'),(4,'w')]], [[(3,'p'),(3,'y'),(3,'g')],
+            [(2,'p'),(4,'r'),(5,'g')],
+            [(5,'p'),(6,'r'),(4,'b')]], [[(5,'w'),(4,'g'),(3,'b')],
+            [(3,'w'),(4,'y'),(3,'r')],
+            [(2,'b'),(6,'b'),(6,'w')]], [[(1,'g'),(1,'r'),(6,'p')],
+            [(5,'r'),(5,'b'),(5,'y')],
+            [(1,'y'),(6,'y'),(1,'p')]])
+def igual_o_rotat(q1,q2):
+    if rota_quadrat(q2) == q1 or rota_quadrat(rota_quadrat(q2)) == q1 or rota_quadrat(rota_quadrat(rota_quadrat(q2))) == q1:
+        print('Els quadrats són iguals, borrant taulell')
+        return True
+    else:
+        return False
+        
+ 
+    
 class Quadrat():
     def __init__(self, llista: List[List[Tuple[int, str]]]):
         self.llista = llista
@@ -174,7 +238,7 @@ class Matriu():
         self.dades = [fila[:] for fila in llista_de_llistes]
      
     def __repr__(self):
-        return '\n'.join(' '.join(f'{num:3}'(num) for num in fila) for fila in self.dades)
+        return '\n'.join(' '.join(f'{num:3}' for num in fila) for fila in self.dades)
     
     def __add__(self, other):
         dades = []
