@@ -1,17 +1,18 @@
-def crear_matriz_completa(lista_matrices):
-    matriz_completa = [[0 for _ in range(36)] for _ in range(36)]
+def crear_matriu_completa(matriu_inicial):
+    matriu_completa = matriu_inicial
 
-    for matriz in lista_matrices:
+    while any(0 in fila for fila in matriu_completa):
+        matriu_temporal = [[0 for _ in range(36)] for _ in range(36)]
+
         for i in range(36):
             for j in range(36):
-                # Si el valor de la matriz actual en la posición (i, j) es mayor a cero
+                # Si el valor de la matriu actual en la posición (i, j) es mayor a cero
                 # y en la matriz_completa aún no se ha colocado ningún valor, o el valor es cero,
-                # entonces lo colocamos en la matriz_completa
-                if matriz[i][j] > 0 and matriz_completa[i][j] == 0:
-                    matriz_completa[i][j] = matriz[i][j]
+                # entonces lo colocamos en la matriz_temporal
+                if matriu_completa[i][j] > 0 and matriu_temporal[i][j] == 0:
+                    matriu_temporal[i][j] = matriu_completa[i][j]
 
-        # Verificamos si la matriz_completa ya no contiene ceros
-        if all(all(num > 0 for num in fila) for fila in matriz_completa):
-            break
+        # Multiplicamos la matriz_temporal por la matriz_inicial
+        matriu_completa = Matriu(matriu_temporal) @ Matriu(matriu_inicial)
 
-    return matriz_completa
+    return matriu_completa
