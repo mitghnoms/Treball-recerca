@@ -96,7 +96,6 @@ def crear_taulells_possibles(quadrat1,quadrat2,quadrat3,quadrat4):
     q4 = [quadrat4, rota_quadrat(quadrat4),rota_quadrat(rota_quadrat(quadrat4)),rota_quadrat(rota_quadrat(rota_quadrat(quadrat4)))]
     quadrats = [q1,q2,q3,q4]
     tots = [[x1,x2,x3,x4] for x1 in q1 + q2 + q3 + q4 for x2 in q1 + q2 + q3 + q4 for x3 in q1 + q2 + q3 + q4 for x4 in q1 + q2 + q3 + q4 if x1 != x2 and x1 != x3 and x1 != x4 and x2 != x3 and x2 != x4 and x3 != x4]
-
     for taulell in tots:
         copsq1 = 0
         copsq2 = 0
@@ -268,10 +267,6 @@ def dividir_matriu(matriu):
 
 
 def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
-    taulell_nou = []
-    taulells = []
-    nombretaulells = 0
-    taulellsfallats = []
     matrius = []
     cincmoviments = []
     suma = 0
@@ -282,16 +277,7 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
     suma_elements = 0
     rankfacilitat = {}
     taulellsjugablesamb5mov = []
-    while len(taulellsfallats) < 1:
-        taulell_nou = crea_taulell(quadrat1,quadrat2,quadrat3,quadrat4)
-        if taulell_nou not in taulells:
-            taulells.append(taulell_nou)
-            nombretaulells += 1
-            print (nombretaulells)
-        elif taulell_nou in taulells:
-            print('ja s\'ha creat aquest taulell')
-            taulellsfallats.append(taulell_nou)
-            print (nombretaulells)
+    taulells = crear_taulells_possibles(quadrat1,quadrat2,quadrat3,quadrat4)
             
     for taulell in taulells:
         matriucreada = (genera_matriu_adjacencia(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])))
