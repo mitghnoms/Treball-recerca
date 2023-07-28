@@ -171,47 +171,67 @@ def demana_moviments(jugador) -> list:
     return llistaFAB
 
 def comprova_moviments(moviments, taulell, casella_inicial, casella_final) -> bool:
+    moviments2 = []
     t = Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])
+    taulell2 = organitzaquadrats(taulell[0],taulell[1],taulell[2],taulell[3])
     matriu = dividir_matriu(genera_matriu_adjacencia(t))
-    casella_actual = []
-    for fila in t.dades:
-        for casella in fila:
-            print(casella)
-            if casella == casella_inicial:
-                casella_actual = casella_inicial
-                print('casella actual trobada ',casella_actual)
+    casella_actual = casella_inicial
+    fila_casella_actual = -1
+    posicio_moviments = -1
+    estat = False
+    estat2 = False
+    respostes_correctes = 0
+    while len(moviments) > 0:
+        for fila in taulell2:
+            for casella in fila:
+                fila_casella_actual += 1
+                if casella == casella_actual:
+                    estat = True
+                    break
+            if estat == True:
                 break
-    fila_casella_actual= 0
-    casella1resposta = 0
-    for f in t.dades:
-        for c in f:
-            fila_casella_actual += 1
-            if c == casella_actual:
-                print('COINCIDÈNCIA')
-                print('fila de la casella actual a la matriu: ',fila_casella_actual)
+
+        print(fila_casella_actual, casella_actual)
+        for fila in taulell2:
+            for casella in fila:
+                posicio_moviments += 1
+                if casella ==moviments[0]:
+                    estat2 = True
+                    break
+            if estat2 == True:
                 break
-            else:
-                continue
-    for c in t.dades:
-        for c in f:
-            casella1resposta += 1
-            if c == moviments[0]:
-                print('1a casella dels moviments trobada',c)
-                break
-    print (fila_casella_actual)
-    for fila in matriu:
-        fila_casella_actual += (-1)
-        if fila_casella_actual == 1:
-            for num in fila:
-                casella1resposta += (-1)
-                if casella1resposta == 0 and num == 1:
-                    print('El primer movimentde la solució és correcte.')
-                else:
-                    print('La teva resposta és incorrecte. Has perdut')
-                    return False
+        print(posicio_moviments, moviments[0])
+        if matriu[fila_casella_actual][posicio_moviments] == 1:
+            print('Primer moviment correcte.')
+            respostes_correctes += 1
+            casella_actual =moviments[0]
+            fila_casella_actual = -1
+            posicio_moviments = -1
+            moviments2.append(moviments[0])
+            moviments.remove(moviments[0])
+            estat = False
+            estat2 = False
+        else:
+            print('La solució donada és errónea.')
+            return False
+    if respostes_correctes == len(moviments2):
+        print('Tots els moviments que has donat són correctes, ben jugat.')
+        print('Has donat una solució correcte de ', len(moviments2), ' moviments')
+        return True
+            
         
         
-    
+        
+# comprova_moviments([(4,'g'),(3,'y'),(5,'y'),(5,'r'),(3,'r')],([[(2,'y'),(1,'w'),(1,'b')],
+#             [(2,'w'),(2,'g'),(2,'r')],
+#             [(4,'p'),(6,'g'),(4,'w')]],[[(3,'p'),(3,'y'),(3,'g')],
+#             [(2,'p'),(4,'r'),(5,'g')],
+#             [(5,'p'),(6,'r'),(4,'b')]],[[(5,'w'),(4,'g'),(3,'b')],
+#             [(3,'w'),(4,'y'),(3,'r')],
+#             [(2,'b'),(6,'b'),(6,'w')]],[[(1,'g'),(1,'r'),(6,'p')],
+#             [(5,'r'),(5,'b'),(5,'y')],
+#             [(1,'y'),(6,'y'),(1,'p')]]),(6,'g'),(3,'r'))        
+#     
 
  
 
@@ -270,16 +290,17 @@ def torn_microrobots(jugador) -> str:
     print('La casela final és : ' , casella_final)
     #falta el temporitzador
     moviments = demana_moviments(jugador)
-    comprovació = comprova_moviments(moviments, t, casella_inicial, casella_final)
+    comprovacio = comprova_moviments(moviments, t, casella_inicial, casella_final)
+    if comprovacio == True:
+        jugar = input(jugador + ', Vols tornar a jugar? Respon SÍ o NO. ')
+        if jugar == 'Sí':
+            torn_microrobots(jugador)
+        elif jugar == 'NO':
+            print('Fins aviat !!!')
+            exit()
+        else:
+            print('No has respost res o has respost incorrectament a la última pregunta, fins aviat!')
+            exit()
     
     
     
-# comprova_moviments([(3,'y'),(3,'g'),(5,'g'),(2,'g'),(2,'y')],[[(2,'y'),(1,'w'),(1,'b')],
-#             [(2,'w'),(2,'g'),(2,'r')],
-#             [(4,'p'),(6,'g'),(4,'w')]],[[(3,'p'),(3,'y'),(3,'g')],
-#             [(2,'p'),(4,'r'),(5,'g')],
-#             [(5,'p'),(6,'r'),(4,'b')]],[[(5,'w'),(4,'g'),(3,'b')],
-#             [(3,'w'),(4,'y'),(3,'r')],
-#             [(2,'b'),(6,'b'),(6,'w')]],[[(1,'g'),(1,'r'),(6,'p')],
-#             [(5,'r'),(5,'b'),(5,'y')],
-#             [(1,'y'),(6,'y'),(1,'p')]],(2,'y'),(2,'w'))
