@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import random
+import numpy as np
 from typing import List, Tuple
 
 
@@ -235,21 +236,39 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
         matriusno += 1
         print (matriusno)
         print (matriucreada, taulell)
-        matriusmult=Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada)
-        cincmoviments.append(matriusmult)
-        print(matriusmult)
-        taulellcomlpet = all(all(valor >= 1 for valor in fila) for fila in matriusmult.dades)
-        if taulellcomlpet:
-            taulellsjugablesamb5mov.append(taulell)
-        for fila in matriusmult.dades:
-            for casella in fila:
-                suma_elements += casella
-        rankfacilitat[suma_elements]= Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])
-    rankfacilitatordenat = sorted(rankfacilitat.keys(), reverse = False)
-    for clau in rankfacilitatordenat:
-        valor = rankfacilitat[clau]
-        print(clau, '\n',valor)
-    print ('Aquests taulells són jugables completament amb 5 moviments',taulellsjugablesamb5mov)
+#         matriusmult=Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada)
+        # Convertir la lista en un array de NumPy
+        matriucreada = np.array(matriucreada)
+        contador = 0
+        # Crear una matriz de ceros de la misma forma que la matriz inicial
+        matriu_completa = np.zeros_like(matriucreada)
+        while 0 in matriu_completa:
+        # Llenar la matriz creada con los valores superiores a 0 de la matriz inicial
+            for i in range(matriucreada.shape[0]):
+                for j in range(matriucreada.shape[1]):
+                    if matriucreada[i, j] > 0 and matriu_completa[i, j] == 0:
+                        matriu_completa[i, j] = matriucreada[i, j]
+            if 0 in matriu_completa:
+                matriucreada = matriucreada @ matriucreada
+                contador += 1
+                
+        print("Contador: ",contador)
+        print("\nMatriu Completa:")
+        print(matriu_completa)
+#         cincmoviments.append(matriusmult)
+#         print(matriusmult)
+#         taulellcomlpet = all(all(valor >= 1 for valor in fila) for fila in matriusmult.dades)
+#         if taulellcomlpet:
+#             taulellsjugablesamb5mov.append(taulell)
+#         for fila in matriusmult.dades:
+#             for casella in fila:
+#                 suma_elements += casella
+#         rankfacilitat[suma_elements]= Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])
+#     rankfacilitatordenat = sorted(rankfacilitat.keys(), reverse = False)
+#     for clau in rankfacilitatordenat:
+#         valor = rankfacilitat[clau]
+#         print(clau, '\n',valor)
+#     print ('Aquests taulells són jugables completament amb 5 moviments',taulellsjugablesamb5mov)
 
     
 #         
