@@ -247,14 +247,14 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
             for i in range(matriucreada.shape[0]):
                 for j in range(matriucreada.shape[1]):
                     if matriucreada[i, j] > 0 and matriu_completa[i, j] == 0:
-                        matriu_completa[i, j] = matriucreada[i, j]
-            if 0 in matriu_completa:
-                matriucreada = matriucreada @ matriucreada
-                contador += 1
-                
+                        matriu_completa[i, j] = matriucreada[i, j] 
+            matriucreada = matriucreada @ matriucreada
+            contador += 1
+        matriu_completa = dividir_matriu(matriu_completa.tolist())
         print("Contador: ",contador)
         print("\nMatriu Completa:")
         print(matriu_completa)
+        
 #         cincmoviments.append(matriusmult)
 #         print(matriusmult)
 #         taulellcomlpet = all(all(valor >= 1 for valor in fila) for fila in matriusmult.dades)
