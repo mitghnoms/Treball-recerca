@@ -236,21 +236,18 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
         matriusno += 1
         print (matriusno)
         print (matriucreada, taulell)
-#         matriusmult=Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada)
-        # Convertir la lista en un array de NumPy
         matriucreada = np.array(matriucreada)
-        contador = 0
-        # Crear una matriz de ceros de la misma forma que la matriz inicial
+        contador = 1
         matriu_completa = np.zeros_like(matriucreada)
         while 0 in matriu_completa:
-        # Llenar la matriz creada con los valores superiores a 0 de la matriz inicial
             for i in range(matriucreada.shape[0]):
                 for j in range(matriucreada.shape[1]):
                     if matriucreada[i, j] > 0 and matriu_completa[i, j] == 0:
-                        matriu_completa[i, j] = matriucreada[i, j] 
+                        matriu_completa[i, j] = matriu_completa[i, j] + contador
             matriucreada = matriucreada @ matriucreada
             contador += 1
         matriu_completa = dividir_matriu(matriu_completa.tolist())
+        contador -= 1
         print("Contador: ",contador)
         print("\nMatriu Completa:")
         print(matriu_completa)
