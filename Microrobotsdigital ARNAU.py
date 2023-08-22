@@ -302,43 +302,112 @@ def torn_microrobots(jugador) -> str:
             print('No has respost res o has respost incorrectament a la última pregunta, fins aviat!')
             exit()
     
-torn_microrobots('Arnau')
+
+
+def comprova_moviments2(moviments, taulell, casella_inicial, casella_final) -> bool:
+    moviments2 = []
+    t = Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])
+    taulell2 = organitzaquadrats(taulell[0],taulell[1],taulell[2],taulell[3])
+    matriu = dividir_matriu(genera_matriu_adjacencia(t))
+    casella_actual = casella_inicial
+    fila_casella_actual = -1
+    posicio_moviments = -1
+    estat = False
+    estat2 = False
+    respostes_correctes = 0
+    while len(moviments) > 0:
+        for fila in taulell2:
+            for casella in fila:
+                fila_casella_actual += 1
+                if casella == casella_actual:
+                    estat = True
+                    break
+            if estat == True:
+                break
+
+#         print(fila_casella_actual, casella_actual)
+        for fila in taulell2:
+            for casella in fila:
+                posicio_moviments += 1
+                if casella ==moviments[0]:
+                    estat2 = True
+                    break
+            if estat2 == True:
+                break
+#         print(posicio_moviments, moviments[0])
+        if matriu[fila_casella_actual][posicio_moviments] == 1:
+#             print('Moviment correcte.')
+            respostes_correctes += 1
+            casella_actual =moviments[0]
+            fila_casella_actual = -1
+            posicio_moviments = -1
+            moviments2.append(moviments[0])
+            moviments.remove(moviments[0])
+            estat = False
+            estat2 = False
+        else:
+#             print('La solució donada és errónea.')
+            return False
+    if respostes_correctes == len(moviments2):
+#         print('Tots els moviments que has donat són correctes, ben jugat.')
+#         print('Has donat una solució correcte de ', len(moviments2), ' moviment/s')
+        return True
 
 def codi_guanyador(taulell, casella_inicial, casella_final):
     matriu = dividir_matriu(genera_matriu_adjacencia(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])))
+    print(matriu[13])
     casella_actual = casella_inicial
     taulell2 = organitzaquadrats(taulell[0],taulell[1],taulell[2],taulell[3])
     fila_casella_actual = -1
     pos_casella_final = -1
+    posicio_casella = -1
+    c_actual = -1
+    moviments_guanyadors = []
     estat = False
     estat2 = False
-    moviments_guanyadors = []
-    for f in taulell2:
-        for c in f:
-            fila_casella_actual += 1
-            if c == casella_actual:
-                estat = True
+    while casella_actual != casella_final:
+        for fila in taulell2:
+            for casella in fila:
+                fila_casella_actual += 1
+                if casella == casella_actual:
+                    estat = True
+                    break
+            if estat == True:
                 break
-        if estat == True:
-            break
-    for f in taulell2:
-        for c in f:
-            pos_casella_final += 1
-            if c == casella_final:
-                estat2 = True
+        for num in matriu[fila_casella_actual]:
+            posicio_casella += 1
+            if num == 1:
                 break
-        if estat2 == True:
-            break
-    if matriu[fila_casella_actual][pos_casella_final] == 1:
-        moviments_guanyadors.append(casella_final)
-        if comprova_moviments(moviments_guanyadrs, taulell, casella_inicial, casella_final) == True:
-            print('Solució més curta possible aconseguida, moviments utilitzats:'+ len(moviments_guanyadors)+'. '+'\n'+'llistat dels moviments usats: '+ moviments_guanyadors)
-    elif matriu[fila_casella_actual][pos_casella_final] != 1:
-        while casella_actual != casella_final:
-            for num in matriu[fila_casella_actual]:
-                if num ==1:
-                    moviments_guanyadors.append(taulell2[matriu[num]])
-                    casella_actual = taulell2[matriu[num]]
+        for fila in taulell2:
+            for casella in fila:
+                c_actual += 1
+                if c_actual == posicio_casella:
+                    casella_actual = casella
+                    estat2 = True
+                    break
+            if estat2 == True:
+                break
+                
+        moviments_guanyadors.append(casella_actual)
+        fila_casella_actual = -1
+        estat = False
+        posicio_casella = -1
+        estat2= False
+        c_actual = -1
+        print(moviments_guanyadors)
+    moviments_guanyadors.append(casella_final)
+    if comprova_moviments2(moviments_guanyadors, taulell, casella_inicial, casella_final) == True:
+        return moviments_guanyadors
+    
+codi_guanyador(([[(2,'y'),(1,'w'),(1,'b')],
+            [(2,'w'),(2,'g'),(2,'r')],
+            [(4,'p'),(6,'g'),(4,'w')]],[[(3,'p'),(3,'y'),(3,'g')],
+            [(2,'p'),(4,'r'),(5,'g')],
+            [(5,'p'),(6,'r'),(4,'b')]],[[(5,'w'),(4,'g'),(3,'b')],
+            [(3,'w'),(4,'y'),(3,'r')],
+            [(2,'b'),(6,'b'),(6,'w')]],[[(1,'g'),(1,'r'),(6,'p')],
+            [(5,'r'),(5,'b'),(5,'y')],
+            [(1,'y'),(6,'y'),(1,'p')]]),(6,'g'),(3,'r'))
                 
             
     
