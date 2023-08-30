@@ -353,52 +353,61 @@ def comprova_moviments2(moviments, taulell, casella_inicial, casella_final) -> b
 #         print('Has donat una solució correcte de ', len(moviments2), ' moviment/s')
         return True
 
+def troba_moviments(matriu):
+    casella_mov_possible = -1
+    moviments_possibles = []
+    for num in matriu:
+        casella_mov_possible += 1
+        if num == 1:
+            moviments_possibles.append(casella_mov_possible)
+    return moviments_possibles
+
 def codi_guanyador(taulell, casella_inicial, casella_final):
     matriu = dividir_matriu(genera_matriu_adjacencia(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])))
-    print(matriu[13])
+#     print(matriu)
     casella_actual = casella_inicial
     taulell2 = organitzaquadrats(taulell[0],taulell[1],taulell[2],taulell[3])
     fila_casella_actual = -1
     pos_casella_final = -1
     posicio_casella = -1
     c_actual = -1
+    combinacions = -1
     moviments_guanyadors = []
     estat = False
     estat2 = False
-    while casella_actual != casella_final:
-        for fila in taulell2:
-            for casella in fila:
-                fila_casella_actual += 1
-                if casella == casella_actual:
-                    estat = True
-                    break
-            if estat == True:
-                break
-        for num in matriu[fila_casella_actual]:
-            posicio_casella += 1
-            if num == 1:
-                break
-        for fila in taulell2:
-            for casella in fila:
-                c_actual += 1
-                if c_actual == posicio_casella:
-                    casella_actual = casella
-                    estat2 = True
-                    break
-            if estat2 == True:
-                break
-                
-        moviments_guanyadors.append(casella_actual)
-        fila_casella_actual = -1
-        estat = False
-        posicio_casella = -1
-        estat2= False
-        c_actual = -1
-        print(moviments_guanyadors)
-    moviments_guanyadors.append(casella_final)
-    if comprova_moviments2(moviments_guanyadors, taulell, casella_inicial, casella_final) == True:
-        return moviments_guanyadors
+    taulell_seguit = []
     
+    for llista in taulell2:
+        for casella in llista:
+            taulell_seguit.append(casella)
+#     print(taulell_seguit)
+    for casella in taulell_seguit:
+        fila_casella_actual +=1
+        if casella == casella_actual:
+            break
+    possibles_mov_inici = troba_moviments(matriu[fila_casella_actual])
+    for casella in taulell_seguit:
+        posicio_casella += 1
+        if posicio_casella in possibles_mov_inici:
+            moviments_guanyadors.append([casella])
+            print (moviments_guanyadors)
+    posicio_casella = -1
+    for combinacio in moviments_guanyadors:
+        combinacions += 1
+        moviments_guanyadors[combinacions].append(troba_moviments(matriu[possibles_mov_inici[combinacions]]))
+        print(moviments_guanyadors)
+        for casella in taulell_seguit:
+            posicio_casella+=1
+            if posicio_casella in moviments_guanyadors[combinacions][1]:
+                moviments_guanyadors[combinacions][1].remove(moviments_guanyadors[combinacions][1][0])
+                moviments_guanyadors[combinacions].append([casella])
+                print (moviments_guanyadors)
+            if [] in moviments_guanyadors[combinacions]:
+                moviments_guanyadors[combinacions].remove(moviments_guanyadors[combinacions][1])
+        posicio_casella = -1
+    
+                
+            
 codi_guanyador(([[(2,'y'),(1,'w'),(1,'b')],
             [(2,'w'),(2,'g'),(2,'r')],
             [(4,'p'),(6,'g'),(4,'w')]],[[(3,'p'),(3,'y'),(3,'g')],
@@ -408,10 +417,3 @@ codi_guanyador(([[(2,'y'),(1,'w'),(1,'b')],
             [(2,'b'),(6,'b'),(6,'w')]],[[(1,'g'),(1,'r'),(6,'p')],
             [(5,'r'),(5,'b'),(5,'y')],
             [(1,'y'),(6,'y'),(1,'p')]]),(6,'g'),(3,'r'))
-                
-            
-    
-    
-    
-    
-
