@@ -139,7 +139,7 @@ def generea_casella(taulell):
 
 def temporitzador() -> str:
     print('Teniu 1 minut per pensar en un camí per arribar de la casella original a la final i escriure'+"""'l.""")
-    time.sleep(45)
+    time.sleep(60)
     print('S\'ha acabat el temps')
     
 def demana_moviments(jugador) -> list:
