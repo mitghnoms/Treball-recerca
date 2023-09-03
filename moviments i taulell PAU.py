@@ -269,35 +269,35 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
         print (matriusno)
         print (matriucreada, taulell)
         matriucreada = np.array(matriucreada)
-        contador = 1
+        comptador = 1
         caselles_arribades = 0
         matriu_completa = np.zeros_like(matriucreada)
         while 0 in matriu_completa:
             for i in range(matriucreada.shape[0]):
                 for j in range(matriucreada.shape[1]):
                     if matriucreada[i, j] > 0 and matriu_completa[i, j] == 0:
-                        matriu_completa[i, j] = matriu_completa[i, j] + contador
+                        matriu_completa[i, j] = matriu_completa[i, j] + comptador
                         caselles_arribades += 1
             matriucreada = matriucreada @ matriucreada
-            caselles_per_contador[contador] = caselles_arribades
-            x = caselles_per_contador.keys()
-            y = caselles_per_contador.values()
+            caselles_per_comptador[comptador] = caselles_arribades
+            x = caselles_per_comptador.keys()
+            y = caselles_per_comptador.values()
 
             plt.clf() 
             plt.bar(x, y)
-            plt.xlabel("CONTADOR")
+            plt.xlabel("COMPTADOR")
             plt.ylabel("CASELLES")
 
             ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\Gràfics Generats"
             plt.savefig(ruta_carpeta + '\\grafico'+str(matriusno)+'.png')
             caselles_arribades = 0
-            contador += 1
+            comptador += 1
         matriu_completa = dividir_matriu(matriu_completa.tolist())
-        contador -= 1
-        print("Contador: ",contador)
+        comptador -= 1
+        print("Comptador: ",comptador)
         print("\nMatriu Completa:")
         print(matriu_completa)
-        print(caselles_per_contador)
+        print(caselles_per_comptador)
         print("El gráfico se ha guardado en:", ruta_carpeta + '\\grafico'+str(matriusno)+'.png')
         
 #         cincmoviments.append(matriusmult)
