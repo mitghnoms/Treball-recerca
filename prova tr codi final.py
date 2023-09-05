@@ -1,6 +1,7 @@
 import random
 from typing import List, Tuple, Dict
 import time
+from itertools import product
 
 def organitzaquadrats(quadrat1,quadrat2,quadrat3,quadrat4):
     taulell = []
@@ -282,16 +283,25 @@ def torn_microrobots(jugador) -> str:
             [(1,'y'),(2,'w'),(2,'g')],
             [(1,'r'),(6,'g'),(5,'r')]]
     t = crea_taulell(quadrat1,quadrat2,quadrat3,quadrat4)
+    print(t)
     taulell = Taulell([Quadrat(t[0]),Quadrat(t[1]), Quadrat(t[2]), Quadrat(t[3])])
     print(taulell)
     casella_inicial = generea_casella(taulell)
     print('La casela inicial és : ' , casella_inicial)
     casella_final = generea_casella(taulell)
     print('La casela final és : ' , casella_final)
-    temporitzador()
+    if casella_inicial == casella_final:
+        torn_microrobots(jugador)
+    
     moviments = demana_moviments(jugador)
+    
     comprovacio = comprova_moviments(moviments, t, casella_inicial, casella_final)
+    
     if comprovacio == True:
+        print('La teva resposta és correcte, però realment és la més eficaç en quant a moviments?')
+        print("""Ara l'algoritme trobarà la resposta més curta en nombre de moviments, si tens una resposta amb el mateix nombre de moviments que l'algoritme, enhorabona, has guanyat. """)
+        moviments_algoritme = codi_guanyador3(t, casella_inicial, casella_final)
+        print("""La resposta més eficient trobada per l'algoritme és la següent: """, moviments_algoritme)
         jugar = input(jugador + ', vols tornar a jugar? Respon SÍ o NO: ')
         if jugar == 'Sí':
             torn_microrobots(jugador)
@@ -303,56 +313,6 @@ def torn_microrobots(jugador) -> str:
             exit()
     
 
-
-def comprova_moviments2(moviments, taulell, casella_inicial, casella_final) -> bool:
-    moviments2 = []
-    t = Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])
-    taulell2 = organitzaquadrats(taulell[0],taulell[1],taulell[2],taulell[3])
-    matriu = dividir_matriu(genera_matriu_adjacencia(t))
-    casella_actual = casella_inicial
-    fila_casella_actual = -1
-    posicio_moviments = -1
-    estat = False
-    estat2 = False
-    respostes_correctes = 0
-    while len(moviments) > 0:
-        for fila in taulell2:
-            for casella in fila:
-                fila_casella_actual += 1
-                if casella == casella_actual:
-                    estat = True
-                    break
-            if estat == True:
-                break
-
-#         print(fila_casella_actual, casella_actual)
-        for fila in taulell2:
-            for casella in fila:
-                posicio_moviments += 1
-                if casella ==moviments[0]:
-                    estat2 = True
-                    break
-            if estat2 == True:
-                break
-#         print(posicio_moviments, moviments[0])
-        if matriu[fila_casella_actual][posicio_moviments] == 1:
-#             print('Moviment correcte.')
-            respostes_correctes += 1
-            casella_actual =moviments[0]
-            fila_casella_actual = -1
-            posicio_moviments = -1
-            moviments2.append(moviments[0])
-            moviments.remove(moviments[0])
-            estat = False
-            estat2 = False
-        else:
-#             print('La solució donada és errónea.')
-            return False
-    if respostes_correctes == len(moviments2):
-#         print('Tots els moviments que has donat són correctes, ben jugat.')
-#         print('Has donat una solució correcte de ', len(moviments2), ' moviment/s')
-        return True
-
 def troba_moviments(matriu):
     casella_mov_possible = -1
     moviments_possibles = []
@@ -362,58 +322,349 @@ def troba_moviments(matriu):
             moviments_possibles.append(casella_mov_possible)
     return moviments_possibles
 
-def codi_guanyador(taulell, casella_inicial, casella_final):
-    matriu = dividir_matriu(genera_matriu_adjacencia(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])))
-#     print(matriu)
-    casella_actual = casella_inicial
-    taulell2 = organitzaquadrats(taulell[0],taulell[1],taulell[2],taulell[3])
-    fila_casella_actual = -1
-    pos_casella_final = -1
-    posicio_casella = -1
-    c_actual = -1
-    combinacions = -1
-    moviments_guanyadors = []
-    estat = False
-    estat2 = False
-    taulell_seguit = []
+def canvia_num_per_casella(posicions, taulell):
+    contador_pos = -1
+    moviments_possibles = []
+    for num in posicions:
+        for casella in taulell:
+            contador_pos += 1
+            if contador_pos == num:
+                moviments_possibles.append(casella)
+                contador_pos = -1
+    return moviments_possibles
+
+def canvia_casella_per_num(casella, taulell):
+    contador = -1
+    casella_def = 0
     
+    for c in taulell:
+        contador += 1
+        if c == casella:
+            casella_def = contador
+    return casella_def
+
+def canvia_casella_per_num_2(caselles, taulell):
+    contador = -1
+    caselles_def = []
+    
+    for casella in taulell:
+        contador += 1
+        if casella in caselles:
+            caselles_def.append(contador)
+    return caselles_def
+
+
+def aplanar_llista(llista):
+    # Usamos una comprensión de listas para aplanar la lista
+    return [element for subllista in llista for element in (aplanar_llista(subllista) if isinstance(subllista, list) else [subllista])]    
+    
+def codi_guanyador3(taulell, casella_inicial, casella_final):
+    matriu = dividir_matriu(genera_matriu_adjacencia(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])))
+    taulell_seguit = []
+    taulell2 = organitzaquadrats(taulell[0],taulell[1],taulell[2],taulell[3])
     for llista in taulell2:
         for casella in llista:
             taulell_seguit.append(casella)
-#     print(taulell_seguit)
-    for casella in taulell_seguit:
-        fila_casella_actual +=1
-        if casella == casella_actual:
-            break
-    possibles_mov_inici = troba_moviments(matriu[fila_casella_actual])
-    for casella in taulell_seguit:
-        posicio_casella += 1
-        if posicio_casella in possibles_mov_inici:
-            moviments_guanyadors.append([casella])
-            print (moviments_guanyadors)
-    posicio_casella = -1
-    for combinacio in moviments_guanyadors:
-        combinacions += 1
-        moviments_guanyadors[combinacions].append(troba_moviments(matriu[possibles_mov_inici[combinacions]]))
-        print(moviments_guanyadors)
-        for casella in taulell_seguit:
-            posicio_casella+=1
-            if posicio_casella in moviments_guanyadors[combinacions][1]:
-                moviments_guanyadors[combinacions][1].remove(moviments_guanyadors[combinacions][1][0])
-                moviments_guanyadors[combinacions].append([casella])
-                print (moviments_guanyadors)
-            if [] in moviments_guanyadors[combinacions]:
-                moviments_guanyadors[combinacions].remove(moviments_guanyadors[combinacions][1])
-        posicio_casella = -1
+            
+    casella_inicial_num = canvia_casella_per_num(casella_inicial ,taulell_seguit)
+    print (casella_inicial_num)
+    casella_final_num = canvia_casella_per_num(casella_final ,taulell_seguit)
+    print (casella_final_num)
+    camins = []
+    moviments = []
+    camins.append([casella_inicial_num])
+    moviments.append([casella_inicial_num])
+    moviments_possibles = []
+    camins_def = []
+    contador = 0
+    cami_final = []
+    while 1 == 1:
+        for llista in moviments:
+            for casella_actual in llista:
+                moviments_possibles = (troba_moviments(matriu[casella_actual]))
+                moviments.append(moviments_possibles)
+#                 moviments.remove(moviments[0])
+                for i in range(len(moviments_possibles)):
+                    camins += [[camins[0], moviments_possibles[i]]]
+#                     camins_def.append(camins)
+                    print (camins)
+                camins_def.append(camins[0])
+                for cami in camins:
+                    if cami in camins_def:
+                        camins.remove(cami)
+                
+                print (camins)
+                for cami in camins:
+                    if casella_final_num in cami:
+                            #canvia_num_per_casella(camins[-1][-1])
+                        cami_final =  aplanar_llista(cami)
+                        print('aquest es el bon camí', cami_final)
+                        for mov in cami_final:
+                            if mov == casella_inicial_num:
+                               cami_final.remove(mov)
+                        return canvia_num_per_casella(cami_final,taulell_seguit)        
+    
+    
+    
+    
+codi_guanyador3(([[(1, 'g'), (1, 'r'), (6, 'p')], [(5, 'r'), (5, 'b'), (5, 'y')], [(1, 'y'), (6, 'y'), (1, 'p')]], [[(3, 'g'), (5, 'g'), (4, 'b')], [(3, 'y'), (4, 'r'), (6, 'r')], [(3, 'p'), (2, 'p'), (5, 'p')]], [[(2, 'b'), (3, 'w'), (5, 'w')], [(6, 'b'), (4, 'y'), (4, 'g')], [(6, 'w'), (3, 'r'), (3, 'b')]], [[(1, 'b'), (2, 'r'), (4, 'w')], [(1, 'w'), (2, 'g'), (6, 'g')], [(2, 'y'), (2, 'w'), (4, 'p')]]), (2,'r'),(5,'y'))                
+
+            
+            
+# codi_guanyador3(([[(2,'y'),(1,'w'),(1,'b')],
+#         [(2,'w'),(2,'g'),(2,'r')],
+#         [(4,'p'),(6,'g'),(4,'w')]],[[(3,'p'),(3,'y'),(3,'g')],
+#         [(2,'p'),(4,'r'),(5,'g')],
+#         [(5,'p'),(6,'r'),(4,'b')]],[[(5,'w'),(4,'g'),(3,'b')],
+#         [(3,'w'),(4,'y'),(3,'r')],
+#         [(2,'b'),(6,'b'),(6,'w')]],[[(1,'g'),(1,'r'),(6,'p')],
+#         [(5,'r'),(5,'b'),(5,'y')],
+#         [(1,'y'),(6,'y'),(1,'p')]]),(6,'g'),(5,'r'))
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+# def codi_guanyador(taulell, casella_inicial, casella_final):
+#     matriu = dividir_matriu(genera_matriu_adjacencia(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])))
+#     taulell_seguit = []
+#     taulell2 = organitzaquadrats(taulell[0],taulell[1],taulell[2],taulell[3])
+#     for llista in taulell2:
+#         for casella in llista:
+#             taulell_seguit.append(casella)
+#           
+#     fila_casella_actual = -1
+#     moviments = []
+#     moviments_propers = []
+#     bons_moviments = []
+#     estat = False
+#     camins = [[13]]
+#     camins_actual = []
+#     
+#     casella_inicial_num = canvia_casella_per_num([casella_inicial],taulell_seguit)
+#     casella_final_num =  canvia_casella_per_num([casella_final],taulell_seguit)
+# 
+#     # Obtenim el primer nivell de moviments de la casella inicial
+#     moviments.append(canvia_num_per_casella(troba_moviments(matriu[casella_inicial_num]), taulell_seguit))
+#     camins_actual = canvia_casella_per_num_2(moviments[0], taulell_seguit)
+# 
+# 
+#     fila_casella_actual = -1
+#     # No sortirem del bucle fins que la casella final aparegui als moviments
+#     while casella_final not in bons_moviments:
+#         # Analitzem cada element dels moviments possibles
+#         for llista in moviments:
+#             for moviment in llista:
+#                 casella_actual = moviment
+#                 
+#                 # Averiguem la fila de la casella actual i obtenim les següents posicions possibles
+#                 for casella in taulell_seguit:
+#                     fila_casella_actual += 1
+#                     if casella == casella_actual:
+# #                         moviments.append(troba_moviments(matriu[fila_casella_actual]))
+#                         moviments.append(canvia_num_per_casella(troba_moviments(matriu[fila_casella_actual]), taulell_seguit))
+#                         fila_casella_actual = -1
+# # #                         print(moviments)
+#                         break
+#                 if casella_actual == moviments[0][-1]:
+#                     estat = True
+#                     
+#                     bons_moviments.append(canvia_casella_per_num_2(moviments[0], taulell_seguit))
+#                     moviments.remove(moviments[0])
+#                     break
+#             if estat == True:
+#                 estat = False
+#                 print(bons_moviments)
+#                 break
+#         if casella_final_num in bons_moviments[-1]:
+#             break
+#     return bons_moviments
+#     
+# # codi_guanyador(([[(2,'y'),(1,'w'),(1,'b')],
+# #             [(2,'w'),(2,'g'),(2,'r')],
+# #             [(4,'p'),(6,'g'),(4,'w')]],[[(3,'p'),(3,'y'),(3,'g')],
+# #             [(2,'p'),(4,'r'),(5,'g')],
+# #             [(5,'p'),(6,'r'),(4,'b')]],[[(5,'w'),(4,'g'),(3,'b')],
+# #             [(3,'w'),(4,'y'),(3,'r')],
+# #             [(2,'b'),(6,'b'),(6,'w')]],[[(1,'g'),(1,'r'),(6,'p')],
+# #             [(5,'r'),(5,'b'),(5,'y')],
+# #             [(1,'y'),(6,'y'),(1,'p')]]),(6,'g'),(3,'r'))
+# 
+# 
+# 
+# def codi_guanyador2(taulell, casella_inicial, casella_final):
+#     matriu = dividir_matriu(genera_matriu_adjacencia(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])))
+#     taulell_seguit = []
+#     taulell2 = organitzaquadrats(taulell[0],taulell[1],taulell[2],taulell[3])
+#     for llista in taulell2:
+#         for casella in llista:
+#             taulell_seguit.append(casella)
+#           
+#     fila_casella_actual = -1
+#     moviments = []
+#     moviments_propers = []
+#     bons_moviments = []
+#     estat = False
+#     camins = []
+#     camins_actual = []
+#     
+#     casella_inicial_num = canvia_casella_per_num_2([casella_inicial],taulell_seguit)
+#     casella_final_num =  canvia_casella_per_num_2([casella_final],taulell_seguit)
+#     camins.append(casella_inicial_num)
+#     moviments.append(casella_inicial_num)
+#     bons_moviments.append(casella_inicial_num)
+#     while casella_final_num not in bons_moviments[-1]:
+#         for llista in moviments:
+#             for casella_actual in llista:
+# # #             moviments_propers = troba_moviments(matriu[casella_actual])
+#                 moviments.append(troba_moviments(matriu[casella_actual]))
+# #                 print(moviments)
+#                 for llista in moviments:
+#                     for moviment in llista:
+#                         if [moviment] == casella_final_num:
+#                             bons_moviments.append(moviments)
+#                             print(bons_moviments)
+#                             return bons_moviments
+#             
+# # #             for moviment_actual in moviments_propers:
+#                 if casella_actual == moviments[0][-1]:
+#                     estat = True
+#                     bons_moviments.append(moviments[0])
+#                     moviments.remove(moviments[0])
+#                     break
+#             if estat == True:
+#                 estat = False
+#                 print(bons_moviments)
+#                 break
+#         if casella_final_num in bons_moviments[-1]:
+#             break
+#                     
+#                   
+#     return camins[-1]
+# 
+# # codi_guanyador2(([[(2,'y'),(1,'w'),(1,'b')],
+# #         [(2,'w'),(2,'g'),(2,'r')],
+# #         [(4,'p'),(6,'g'),(4,'w')]],[[(3,'p'),(3,'y'),(3,'g')],
+# #         [(2,'p'),(4,'r'),(5,'g')],
+# #         [(5,'p'),(6,'r'),(4,'b')]],[[(5,'w'),(4,'g'),(3,'b')],
+# #         [(3,'w'),(4,'y'),(3,'r')],
+# #         [(2,'b'),(6,'b'),(6,'w')]],[[(1,'g'),(1,'r'),(6,'p')],
+# #         [(5,'r'),(5,'b'),(5,'y')],
+# #         [(1,'y'),(6,'y'),(1,'p')]]),(6,'g'),(3,'r'))
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# #     moviments.append(canvia_num_per_casella(troba_moviments(matriu[fila_casella_actual]), taulell_seguit))
+# #     fila_casella_actual = -1
+# #     while casella_final not in bons_moviments:
+# #         for llista in moviments:
+# #             for moviment in llista:
+# #                 casella_actual = moviment
+# #                 
+# #                 for casella in taulell_seguit:
+# #                     fila_casella_actual += 1
+# #                     if casella == casella_actual:
+# #                         moviments.append(troba_moviments(matriu[fila_casella_actual]))
+# # #                         moviments.append(canvia_num_per_casella(troba_moviments(matriu[fila_casella_actual]), taulell_seguit))
+# #                         fila_casella_actual = -1
+# # #                         print(moviments)
+# #                         break
+# #                 if casella_actual == moviments[0][-1]:
+# #                     estat = True
+# #                     bons_moviments.append(moviments[0])
+# #                     moviments.remove(moviments[0])
+# #                     break
+# #             if estat == True:
+# #                 estat = False
+# #                 print(bons_moviments)
+# #                 break
+# #         if casella_final in bons_moviments[-1]:
+# #             break
+# #     return bons_moviments    
+#     
+#     
+# #     print(matriu)
+# #     casella_actual = casella_inicial
+# #     taulell2 = organitzaquadrats(taulell[0],taulell[1],taulell[2],taulell[3])
+# #     fila_casella_actual = -1
+# #     pos_casella_final = -1
+# #     posicio_casella = -1
+# #     c_actual = -1
+# #     combinacions = -1
+# #     moviments_guanyadors = []
+# #     estat = False
+# #     estat2 = False
+# #     taulell_seguit = []
+# #     
+# #     for llista in taulell2:
+# #         for casella in llista:
+# #             taulell_seguit.append(casella)
+# # #     print(taulell_seguit)
+# #     for casella in taulell_seguit:
+# #         fila_casella_actual +=1
+# #         if casella == casella_actual:
+# #             break
+# #     possibles_mov_inici = troba_moviments(matriu[fila_casella_actual])
+# #     for casella in taulell_seguit:
+# #         posicio_casella += 1
+# #         if posicio_casella in possibles_mov_inici:
+# #             moviments_guanyadors.append([casella])
+# #             print (moviments_guanyadors)
+# #     posicio_casella = -1
+# #     for combinacio in moviments_guanyadors:
+# #         combinacions += 1
+# #         moviments_guanyadors[combinacions].append(troba_moviments(matriu[possibles_mov_inici[combinacions]]))
+# #         print(moviments_guanyadors)
+# #         for casella in taulell_seguit:
+# #             posicio_casella+=1
+# #             if posicio_casella in moviments_guanyadors[combinacions][1]:
+# #                 moviments_guanyadors[combinacions][1].remove(moviments_guanyadors[combinacions][1][0])
+# #                 moviments_guanyadors[combinacions].append([casella])
+# #                 print (moviments_guanyadors)
+# #             if [] in moviments_guanyadors[combinacions]:
+# #                 moviments_guanyadors[combinacions].remove(moviments_guanyadors[combinacions][1])
+# #         posicio_casella = -1
+# #   
+#         
     
                 
             
-codi_guanyador(([[(2,'y'),(1,'w'),(1,'b')],
-            [(2,'w'),(2,'g'),(2,'r')],
-            [(4,'p'),(6,'g'),(4,'w')]],[[(3,'p'),(3,'y'),(3,'g')],
-            [(2,'p'),(4,'r'),(5,'g')],
-            [(5,'p'),(6,'r'),(4,'b')]],[[(5,'w'),(4,'g'),(3,'b')],
-            [(3,'w'),(4,'y'),(3,'r')],
-            [(2,'b'),(6,'b'),(6,'w')]],[[(1,'g'),(1,'r'),(6,'p')],
-            [(5,'r'),(5,'b'),(5,'y')],
-            [(1,'y'),(6,'y'),(1,'p')]]),(6,'g'),(3,'r'))
