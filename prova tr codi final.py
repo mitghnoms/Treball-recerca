@@ -283,7 +283,7 @@ def torn_microrobots(jugador) -> str:
             [(1,'y'),(2,'w'),(2,'g')],
             [(1,'r'),(6,'g'),(5,'r')]]
     t = crea_taulell(quadrat1,quadrat2,quadrat3,quadrat4)
-    print(t)
+#     print(t)
     taulell = Taulell([Quadrat(t[0]),Quadrat(t[1]), Quadrat(t[2]), Quadrat(t[3])])
     print(taulell)
     casella_inicial = generea_casella(taulell)
@@ -331,6 +331,7 @@ def canvia_num_per_casella(posicions, taulell):
             if contador_pos == num:
                 moviments_possibles.append(casella)
                 contador_pos = -1
+                break
     return moviments_possibles
 
 def canvia_casella_per_num(casella, taulell):
@@ -367,9 +368,9 @@ def codi_guanyador3(taulell, casella_inicial, casella_final):
             taulell_seguit.append(casella)
             
     casella_inicial_num = canvia_casella_per_num(casella_inicial ,taulell_seguit)
-    print (casella_inicial_num)
+#     print (casella_inicial_num)
     casella_final_num = canvia_casella_per_num(casella_final ,taulell_seguit)
-    print (casella_final_num)
+#     print (casella_final_num)
     camins = []
     moviments = []
     camins.append([casella_inicial_num])
@@ -387,18 +388,18 @@ def codi_guanyador3(taulell, casella_inicial, casella_final):
                 for i in range(len(moviments_possibles)):
                     camins += [[camins[0], moviments_possibles[i]]]
 #                     camins_def.append(camins)
-                    print (camins)
+#                     print (camins)
                 camins_def.append(camins[0])
                 for cami in camins:
                     if cami in camins_def:
                         camins.remove(cami)
                 
-                print (camins)
+#                 print (camins)
                 for cami in camins:
                     if casella_final_num in cami:
                             #canvia_num_per_casella(camins[-1][-1])
                         cami_final =  aplanar_llista(cami)
-                        print('aquest es el bon camí', cami_final)
+#                         print('aquest es el bon camí', cami_final)
                         for mov in cami_final:
                             if mov == casella_inicial_num:
                                cami_final.remove(mov)
@@ -407,7 +408,7 @@ def codi_guanyador3(taulell, casella_inicial, casella_final):
     
     
     
-codi_guanyador3(([[(1, 'g'), (1, 'r'), (6, 'p')], [(5, 'r'), (5, 'b'), (5, 'y')], [(1, 'y'), (6, 'y'), (1, 'p')]], [[(3, 'g'), (5, 'g'), (4, 'b')], [(3, 'y'), (4, 'r'), (6, 'r')], [(3, 'p'), (2, 'p'), (5, 'p')]], [[(2, 'b'), (3, 'w'), (5, 'w')], [(6, 'b'), (4, 'y'), (4, 'g')], [(6, 'w'), (3, 'r'), (3, 'b')]], [[(1, 'b'), (2, 'r'), (4, 'w')], [(1, 'w'), (2, 'g'), (6, 'g')], [(2, 'y'), (2, 'w'), (4, 'p')]]), (2,'r'),(5,'y'))                
+# codi_guanyador3(([[(1, 'g'), (1, 'r'), (6, 'p')], [(5, 'r'), (5, 'b'), (5, 'y')], [(1, 'y'), (6, 'y'), (1, 'p')]], [[(3, 'g'), (5, 'g'), (4, 'b')], [(3, 'y'), (4, 'r'), (6, 'r')], [(3, 'p'), (2, 'p'), (5, 'p')]], [[(2, 'b'), (3, 'w'), (5, 'w')], [(6, 'b'), (4, 'y'), (4, 'g')], [(6, 'w'), (3, 'r'), (3, 'b')]], [[(1, 'b'), (2, 'r'), (4, 'w')], [(1, 'w'), (2, 'g'), (6, 'g')], [(2, 'y'), (2, 'w'), (4, 'p')]]), (2,'r'),(5,'y'))                
 
             
             
