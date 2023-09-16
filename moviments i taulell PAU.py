@@ -250,6 +250,7 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
     suma_elements = 0
     rankfacilitat = {}
     taulellsjugablesamb5mov = []
+    parelles_en_3_mov = {}
 #     while len(taulellsfallats) < 1:
 #         taulell_nou = crea_taulell(quadrat1,quadrat2,quadrat3,quadrat4)
 #         if taulell_nou not in taulells:
@@ -265,7 +266,7 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
         matriucreada = (genera_matriu_adjacencia(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])))
         matriucreada = dividir_matriu(matriucreada)
         matriusno += 1
-        caselles_per_contador = {}
+        caselles_per_comptador = {}
         print (matriusno)
         print (matriucreada, taulell)
         matriucreada = np.array(matriucreada)
@@ -280,13 +281,19 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
                         caselles_arribades += 1
             matriucreada = matriucreada @ matriucreada
             caselles_per_comptador[comptador] = caselles_arribades
+            if comptador == 3:
+                if caselles_per_comptador[3] in parelles_en_3_mov:
+                    parelles_en_3_mov[caselles_per_comptador[3]].append(taulell)
+                else:
+                    parelles_en_3_mov[caselles_per_comptador[3]] = taulell
             x = caselles_per_comptador.keys()
             y = caselles_per_comptador.values()
-
             plt.clf() 
             plt.bar(x, y)
-            plt.xlabel("COMPTADOR")
-            plt.ylabel("CASELLES")
+            plt.xlim(0, 7)  
+            plt.ylim(0, 800)  
+            plt.xlabel("Moviments")
+            plt.ylabel("Parelles de caselles")
 
             ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\Gràfics Generats"
             plt.savefig(ruta_carpeta + '\\grafico'+str(matriusno)+'.png')
@@ -299,7 +306,9 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
         print(matriu_completa)
         print(caselles_per_comptador)
         print("El gráfico se ha guardado en:", ruta_carpeta + '\\grafico'+str(matriusno)+'.png')
-        
+        print(parelles_en_3_mov)
+    parelles_en_3_mov = sorted(parelles_en_3_mov.keys())
+    print(parelles_en_3_mov)
 #         cincmoviments.append(matriusmult)
 #         print(matriusmult)
 #         taulellcomlpet = all(all(valor >= 1 for valor in fila) for fila in matriusmult.dades)
