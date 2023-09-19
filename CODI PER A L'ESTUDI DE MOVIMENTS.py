@@ -1,7 +1,9 @@
-#!/usr/bin/env python3
 import random
+import numpy as np
+import matplotlib.pyplot as plt
 from typing import List, Tuple
 
+#aquí a sota trobareu els quadrts de prova i un taulel de proves per poder usar en les diferens funcions.
 
 quadrat1 = [[(2,'y'),(1,'w'),(1,'b')],
             [(2,'w'),(2,'g'),(2,'r')],
@@ -114,39 +116,7 @@ def crear_taulells_possibles(quadrat1,quadrat2,quadrat3,quadrat4):
             taulells.append(taulell)
     print (len(taulells))
     return taulells
-#     tots = [(x1,x2,x3,x4) for x1 in q1 + q2 + q3 + q4 for x2 in q1 + q2 + q3 + q4 for x3 in q1 + q2 + q3 + q4 for x4 in q1 + q2 + q3 + q4 if x1 != x2 and x1 != x3 and x1 != x4 and x2 != x3 and x2 != x4 and x3 != x4]
-#     for taulell in tots:
-#         for q in quadrats:
-#             for variant in q1:
-#                 if variant in taulell:
-#                     nvariants1 += 1
-#                     if nvariants1 >= 2:
-#                         tots.remove(taulell)
-#                         nvariants1 = 0
-#                     else:
-#                         nvariant1 = 0
-#                         continue
-#     print (len(tots))
-#     return tots
 
-crear_taulells_possibles([[(2,'y'),(1,'w'),(1,'b')],
-            [(2,'w'),(2,'g'),(2,'r')],
-            [(4,'p'),(6,'g'),(4,'w')]], [[(3,'p'),(3,'y'),(3,'g')],
-            [(2,'p'),(4,'r'),(5,'g')],
-            [(5,'p'),(6,'r'),(4,'b')]], [[(5,'w'),(4,'g'),(3,'b')],
-            [(3,'w'),(4,'y'),(3,'r')],
-            [(2,'b'),(6,'b'),(6,'w')]], [[(1,'g'),(1,'r'),(6,'p')],
-            [(5,'r'),(5,'b'),(5,'y')],
-            [(1,'y'),(6,'y'),(1,'p')]])
-def igual_o_rotat(q1,q2):
-    if rota_quadrat(q2) == q1 or rota_quadrat(rota_quadrat(q2)) == q1 or rota_quadrat(rota_quadrat(rota_quadrat(q2))) == q1:
-        print('Els quadrats són iguals, borrant taulell')
-        return True
-    else:
-        return False
-        
- 
-    
 class Quadrat():
     def __init__(self, llista: List[List[Tuple[int, str]]]):
         self.llista = llista
@@ -237,7 +207,7 @@ class Matriu():
         self.dades = [fila[:] for fila in llista_de_llistes]
      
     def __repr__(self):
-        return '\n'.join(' '.join(f'{num:3}' for num in fila) for fila in self.dades)
+        return '\n'.join(' '.join(f'{num:3}'for num in fila) for fila in self.dades)
     
     def __add__(self, other):
         dades = []
@@ -267,6 +237,10 @@ def dividir_matriu(matriu):
 
 
 def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
+    taulell_nou = []
+    taulells = crear_taulells_possibles(quadrat1,quadrat2,quadrat3,quadrat4)
+    nombretaulells = 0
+    taulellsfallats = []
     matrius = []
     cincmoviments = []
     suma = 0
@@ -277,29 +251,79 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
     suma_elements = 0
     rankfacilitat = {}
     taulellsjugablesamb5mov = []
-    taulells = crear_taulells_possibles(quadrat1,quadrat2,quadrat3,quadrat4)
-            
+    parelles_en_3_mov = {}
+#     while len(taulellsfallats) < 1:
+#         taulell_nou = crea_taulell(quadrat1,quadrat2,quadrat3,quadrat4)
+#         if taulell_nou not in taulells:
+#             taulells.append(taulell_nou)
+#             nombretaulells += 1
+#             print (nombretaulells)
+#         elif taulell_nou in taulells:
+#             print('ja s\'ha creat aquest taulell')
+#             taulellsfallats.append(taulell_nou)
+#             print (nombretaulells)
+#             
     for taulell in taulells:
         matriucreada = (genera_matriu_adjacencia(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])))
         matriucreada = dividir_matriu(matriucreada)
         matriusno += 1
+        caselles_per_comptador = {}
         print (matriusno)
         print (matriucreada, taulell)
-        matriusmult=Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada) @ Matriu(matriucreada)
-        cincmoviments.append(matriusmult)
-        print(matriusmult)
-        taulellcomlpet = all(all(valor >= 1 for valor in fila) for fila in matriusmult.dades)
-        if taulellcomlpet:
-            taulellsjugablesamb5mov.append(taulell)
-        for fila in matriusmult.dades:
-            for casella in fila:
-                suma_elements += casella
-        rankfacilitat[suma_elements]= Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])
-    rankfacilitatordenat = sorted(rankfacilitat.keys(), reverse = False)
-    for clau in rankfacilitatordenat:
-        valor = rankfacilitat[clau]
-        print(clau, '\n',valor)
-    print ('Aquests taulells són jugables completament amb 5 moviments',taulellsjugablesamb5mov)
+        matriucreada = np.array(matriucreada)
+        comptador = 1
+        caselles_arribades = 0
+        matriu_completa = np.zeros_like(matriucreada)
+        while 0 in matriu_completa:
+            for i in range(matriucreada.shape[0]):
+                for j in range(matriucreada.shape[1]):
+                    if matriucreada[i, j] > 0 and matriu_completa[i, j] == 0:
+                        matriu_completa[i, j] = matriu_completa[i, j] + comptador
+                        caselles_arribades += 1
+            matriucreada = matriucreada @ matriucreada
+            caselles_per_comptador[comptador] = caselles_arribades
+            if comptador == 3:
+                if caselles_per_comptador[3] in parelles_en_3_mov:
+                    parelles_en_3_mov[caselles_per_comptador[3]].append(taulell)
+                else:
+                    parelles_en_3_mov[caselles_per_comptador[3]] = taulell
+            x = caselles_per_comptador.keys()
+            y = caselles_per_comptador.values()
+            plt.clf() 
+            plt.bar(x, y)
+            plt.xlim(0, 7)  
+            plt.ylim(0, 800)  
+            plt.xlabel("Moviments")
+            plt.ylabel("Parelles de caselles")
+
+            ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\Gràfics Generats"
+            plt.savefig(ruta_carpeta + '\\grafico'+str(matriusno)+'.png')
+            caselles_arribades = 0
+            comptador += 1
+        matriu_completa = dividir_matriu(matriu_completa.tolist())
+        comptador -= 1
+        print("Comptador: ",comptador)
+        print("\nMatriu Completa:")
+        print(matriu_completa)
+        print(caselles_per_comptador)
+        print("El gráfico se ha guardado en:", ruta_carpeta + '\\grafico'+str(matriusno)+'.png')
+        print(parelles_en_3_mov)
+    parelles_en_3_mov = sorted(parelles_en_3_mov.keys())
+    print(parelles_en_3_mov)
+#         cincmoviments.append(matriusmult)
+#         print(matriusmult)
+#         taulellcomlpet = all(all(valor >= 1 for valor in fila) for fila in matriusmult.dades)
+#         if taulellcomlpet:
+#             taulellsjugablesamb5mov.append(taulell)
+#         for fila in matriusmult.dades:
+#             for casella in fila:
+#                 suma_elements += casella
+#         rankfacilitat[suma_elements]= Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])
+#     rankfacilitatordenat = sorted(rankfacilitat.keys(), reverse = False)
+#     for clau in rankfacilitatordenat:
+#         valor = rankfacilitat[clau]
+#         print(clau, '\n',valor)
+#     print ('Aquests taulells són jugables completament amb 5 moviments',taulellsjugablesamb5mov)
 
     
 #         

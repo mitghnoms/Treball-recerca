@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import List, Tuple
 
+#aquí a sota trobareu els quadrts de prova i un taulel de proves per poder usar en les diferens funcions.
 
 quadrat1 = [[(2,'y'),(1,'w'),(1,'b')],
             [(2,'w'),(2,'g'),(2,'r')],

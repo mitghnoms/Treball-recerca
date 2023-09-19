@@ -5,9 +5,15 @@ from itertools import product
 
 def organitzaquadrats(quadrat1,quadrat2,quadrat3,quadrat4):
     taulell = []
-#     taulell = [quadrat1[0], quadrat2[0],quadrat1[1],quadrat2[1],quadrat1[2],quadrat2[2],quadrat3[0],quadrat4[0],quadrat3[1],quadrat4[1],quadrat3[2],quadrat4[2]]
-    taulell = [quadrat1[0], quadrat2[0],quadrat1[1],quadrat2[1],quadrat1[2],quadrat2[2],quadrat1[3],quadrat2[3],quadrat3[0],quadrat4[0],quadrat3[1],quadrat4[1],quadrat3[2],quadrat4[2],quadrat3[3],quadrat4[3]]
+    taulell = [quadrat1[0], quadrat2[0],quadrat1[1],quadrat2[1],quadrat1[2],quadrat2[2],quadrat3[0],quadrat4[0],quadrat3[1],quadrat4[1],quadrat3[2],quadrat4[2]]
     return taulell
+
+#La part de dalt serveix per organitzar un taulell amb quadrats de 3 caselles per 3 caselles.
+
+#La part de baix serveix per organitzar un taulell amb quadrats de 8 caselles per 8 caselles.
+
+#     taulell = [quadrat1[0], quadrat2[0],quadrat1[1],quadrat2[1],quadrat1[2],quadrat2[2],quadrat1[3],quadrat2[3],quadrat3[0],quadrat4[0],quadrat3[1],quadrat4[1],quadrat3[2],quadrat4[2],quadrat3[3],quadrat4[3]]
+#     return taulell
 
 def rota_quadrat(quadrat: List[List[Tuple[int, str]]]) -> List[List[Tuple[int, str]]]:
      temp_matrix = []
@@ -66,7 +72,6 @@ class Quadrat():
         return resultat
 
     def rotar(resultat):
-        # aquí hi va el codi de rotar
         temp_matrix = []
         column = len(resultat)-1
         for column in range(len(resultat)):
@@ -84,56 +89,65 @@ class Taulell():
         self.llista_quadrats = llista_quadrats
         self.dades = []
 
-#         for i in range(6):
-#             fila_nova = []
-#             for j in range(6):
-#                 if i < 3:
-#                     if j < 3:
-#                         fila_nova.append(llista_quadrats[0].llista[i][j])
-#                     else:
-#                         fila_nova.append(llista_quadrats[1].llista[i][j - 3])
-#                 else:
-#                     if j < 3:
-#                         fila_nova.append(llista_quadrats[2].llista[i - 3][j])
-#                     else:
-#                         fila_nova.append(llista_quadrats[3].llista[i - 3][j - 3])
-#             self.dades.append(fila_nova)
-        for i in range(8):
+        for i in range(6):
             fila_nova = []
-            for j in range(8):
-                if i < 4:
-                    if j < 4:
+            for j in range(6):
+                if i < 3:
+                    if j < 3:
                         fila_nova.append(llista_quadrats[0].llista[i][j])
                     else:
-                        fila_nova.append(llista_quadrats[1].llista[i][j - 4])
+                        fila_nova.append(llista_quadrats[1].llista[i][j - 3])
                 else:
-                    if j < 4:
-                        fila_nova.append(llista_quadrats[2].llista[i - 4][j])
+                    if j < 3:
+                        fila_nova.append(llista_quadrats[2].llista[i - 3][j])
                     else:
-                        fila_nova.append(llista_quadrats[3].llista[i - 4][j - 4])
+                        fila_nova.append(llista_quadrats[3].llista[i - 3][j - 3])
             self.dades.append(fila_nova)
 
+#La part de dalt serveix per representar un taulell de 6 per 6 caselles.
+
+#La part de baix serveix per representar un taulell de 8 per 8 caselles.
+
+#         for i in range(8):
+#             fila_nova = []
+#             for j in range(8):
+#                 if i < 4:
+#                     if j < 4:
+#                         fila_nova.append(llista_quadrats[0].llista[i][j])
+#                     else:
+#                         fila_nova.append(llista_quadrats[1].llista[i][j - 4])
+#                 else:
+#                     if j < 4:
+#                         fila_nova.append(llista_quadrats[2].llista[i - 4][j])
+#                     else:
+#                         fila_nova.append(llista_quadrats[3].llista[i - 4][j - 4])
+#             self.dades.append(fila_nova)
+
     def __repr__(self):
-#         resultat = ''
-#         for i, fila in enumerate(self.dades):
-#             for j, cella in enumerate(fila):
-#                 resultat += f'{cella[0]}{cella[1]}' + ' '
-#                 if j == 2:
-#                     resultat += '| '
-#             if i == 2:
-#                 resultat += '\n' + '-'*(3*6+2)
-#             resultat += '\n'
-#         return resultat
         resultat = ''
         for i, fila in enumerate(self.dades):
             for j, cella in enumerate(fila):
                 resultat += f'{cella[0]}{cella[1]}' + ' '
-                if j == 3:
+                if j == 2:
                     resultat += '| '
-            if i == 3:
-                resultat += '\n' + '-'*(4*6+2)
+            if i == 2:
+                resultat += '\n' + '-'*(3*6+2)
             resultat += '\n'
         return resultat
+#La part de dalt serveix per representar un taulell de 6 per 6 caselles.
+
+#La part de baix serveix per representar un taulell de 8 per 8 caselles.
+
+#         resultat = ''
+#         for i, fila in enumerate(self.dades):
+#             for j, cella in enumerate(fila):
+#                 resultat += f'{cella[0]}{cella[1]}' + ' '
+#                 if j == 3:
+#                     resultat += '| '
+#             if i == 3:
+#                 resultat += '\n' + '-'*(4*6+2)
+#             resultat += '\n'
+#         return resultat
 
 def genera_matriu_adjacencia(t: Taulell):
     m = []
@@ -156,8 +170,8 @@ def genera_matriu_adjacencia(t: Taulell):
     return m
 
 def dividir_matriu(matriu):
-    return [matriu[i:i + 64] for i in range(0, len(matriu), 64)]
-#     return [matriu[i:i + 36] for i in range(0, len(matriu), 36)]
+#     return [matriu[i:i + 64] for i in range(0, len(matriu), 64)]#Crear matriu de 64 per 64, per un taulell de 8 per 8.
+    return [matriu[i:i + 36] for i in range(0, len(matriu), 36)]#Crear mtriu de 36 per 36, per un taulell de 6 per 6.
 
 def generea_casella(taulell):
     fila_aleatoria = random.randint(0, len(taulell.dades) - 1)
@@ -387,10 +401,10 @@ def aplanar_llista(llista):
     
 def codi_guanyador3(taulell, casella_inicial, casella_final):
     matriu = dividir_matriu(genera_matriu_adjacencia(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])])))
-    print(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])]))
+#     print(Taulell([Quadrat(taulell[0]),Quadrat(taulell[1]),Quadrat(taulell[2]),Quadrat(taulell[3])]))
     taulell_seguit = []
     taulell2 = organitzaquadrats(taulell[0],taulell[1],taulell[2],taulell[3])
-    print(taulell2)
+#     print(taulell2)
     for llista in taulell2:
         for casella in llista:
             taulell_seguit.append(casella)
@@ -422,26 +436,21 @@ def codi_guanyador3(taulell, casella_inicial, casella_final):
                     if cami in camins_def:
                         camins.remove(cami)
                 
-                print (camins)
+#                 print (camins)
                 for cami in camins:
                     if casella_final_num in cami:
                         if casella_final_num in cami:
                                 #canvia_num_per_casella(camins[-1][-1])
                             cami_final =  aplanar_llista(cami)
-                            print('aquest es el bon camí', cami_final)
+#                             print('aquest es el bon camí', cami_final)
                             for mov in cami_final:
                                 if mov == casella_inicial_num:
                                    cami_final.remove(mov)
-                                   print(canvia_num_per_casella(cami_final,taulell_seguit))
-                            return canvia_num_per_casella(cami_final,taulell_seguit)        
-    
-    
-    
-    
-# codi_guanyador3(([[(1, 'g'), (1, 'r'), (6, 'p')], [(5, 'r'), (5, 'b'), (5, 'y')], [(1, 'y'), (6, 'y'), (1, 'p')]], [[(3, 'g'), (5, 'g'), (4, 'b')], [(3, 'y'), (4, 'r'), (6, 'r')], [(3, 'p'), (2, 'p'), (5, 'p')]], [[(2, 'b'), (3, 'w'), (5, 'w')], [(6, 'b'), (4, 'y'), (4, 'g')], [(6, 'w'), (3, 'r'), (3, 'b')]], [[(1, 'b'), (2, 'r'), (4, 'w')], [(1, 'w'), (2, 'g'), (6, 'g')], [(2, 'y'), (2, 'w'), (4, 'p')]]), (2,'r'),(5,'y'))                
+#                                    print(canvia_num_per_casella(cami_final,taulell_seguit))
+                            return canvia_num_per_casella(cami_final,taulell_seguit)                  
 
-            
-            
+#prova amb el tauell de 6 per 6.
+                        
 # codi_guanyador3(([[(2,'y'),(1,'w'),(1,'b')],
 #         [(2,'w'),(2,'g'),(2,'r')],
 #         [(4,'p'),(6,'g'),(4,'w')]],[[(3,'p'),(3,'y'),(3,'g')],
@@ -452,21 +461,21 @@ def codi_guanyador3(taulell, casella_inicial, casella_final):
 #         [(5,'r'),(5,'b'),(5,'y')],
 #         [(1,'y'),(6,'y'),(1,'p')]]),(6,'g'),(5,'r'))
     
-    
+#prova amb el tauell de 8 per 8.   
 
-codi_guanyador3(([[(1,'b'),(2,'r'),(4,'w'),(7,'y')],
-               [(7,'w'),(2,'g'),(6,'g'),(6,'b')],
-               [(8,'o'),(7,'o'),(3,'c'),(6,'r')],
-               [(3,'y'),(5,'r'),(4,'p'),(1,'r')]],[[(2,'b'),(3,'w'),(5,'w'),(8,'y')],
-               [(8,'w'),(4,'g'),(1,'g'),(1,'c')],
-               [(3,'g'),(3,'o'),(2,'p'),(8,'b')],
-               [(7,'b'),(1,'y'),(6,'p'),(4,'b')]],[[(3,'b'),(4,'o'),(1,'p'),(6,'c')],
-               [(3,'p'),(2,'o'),(5,'b'),(1,'w')],
-               [(5,'o'),(3,'r'),(7,'g'),(7,'p')],
-               [(5,'c'),(2,'w'),(4,'c'),(8,'r')]],[[(5,'g'),(5,'y'),(5,'p'),(6,'w')],
-               [(6,'y'),(1,'o'),(7,'r'),(4,'y')],
-               [(6,'o'),(2,'y'),(4,'r'),(7,'c')],
-               [(8,'g'),(2,'c'),(8,'p'),(8,'c')]]),(3,'g'),(5,'c'))
+# codi_guanyador3(([[(1,'b'),(2,'r'),(4,'w'),(7,'y')],
+#                [(7,'w'),(2,'g'),(6,'g'),(6,'b')],
+#                [(8,'o'),(7,'o'),(3,'c'),(6,'r')],
+#                [(3,'y'),(5,'r'),(4,'p'),(1,'r')]],[[(2,'b'),(3,'w'),(5,'w'),(8,'y')],
+#                [(8,'w'),(4,'g'),(1,'g'),(1,'c')],
+#                [(3,'g'),(3,'o'),(2,'p'),(8,'b')],
+#                [(7,'b'),(1,'y'),(6,'p'),(4,'b')]],[[(3,'b'),(4,'o'),(1,'p'),(6,'c')],
+#                [(3,'p'),(2,'o'),(5,'b'),(1,'w')],
+#                [(5,'o'),(3,'r'),(7,'g'),(7,'p')],
+#                [(5,'c'),(2,'w'),(4,'c'),(8,'r')]],[[(5,'g'),(5,'y'),(5,'p'),(6,'w')],
+#                [(6,'y'),(1,'o'),(7,'r'),(4,'y')],
+#                [(6,'o'),(2,'y'),(4,'r'),(7,'c')],
+#                [(8,'g'),(2,'c'),(8,'p'),(8,'c')]]),(3,'g'),(5,'c'))
 
 
 
