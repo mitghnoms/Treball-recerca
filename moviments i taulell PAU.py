@@ -252,6 +252,7 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
     rankfacilitat = {}
     taulellsjugablesamb5mov = []
     parelles_en_3_mov = {}
+    caselles_per_comptador_anterior = []
 #     while len(taulellsfallats) < 1:
 #         taulell_nou = crea_taulell(quadrat1,quadrat2,quadrat3,quadrat4)
 #         if taulell_nou not in taulells:
@@ -287,6 +288,12 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
                     parelles_en_3_mov[caselles_per_comptador[3]].append(taulell)
                 else:
                     parelles_en_3_mov[caselles_per_comptador[3]] = taulell
+#           ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\Gràfics Generats"
+            caselles_arribades = 0
+            comptador += 1
+#       ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\PROVA DE SIMILARS"
+        ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\PROVA AMB TAULELLS DELS GRAFICS"
+        if caselles_per_comptador not in caselles_per_comptador_anterior:
             x = caselles_per_comptador.keys()
             y = caselles_per_comptador.values()
             plt.clf() 
@@ -295,11 +302,8 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
             plt.ylim(0, 800)  
             plt.xlabel("Moviments")
             plt.ylabel("Parelles de caselles")
-
-            ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\Gràfics Generats"
             plt.savefig(ruta_carpeta + '\\grafico'+str(matriusno)+'.png')
-            caselles_arribades = 0
-            comptador += 1
+        caselles_per_comptador_anterior += [caselles_per_comptador]
         matriu_completa = dividir_matriu(matriu_completa.tolist())
         comptador -= 1
         print("Comptador: ",comptador)
@@ -310,6 +314,54 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
         print(parelles_en_3_mov)
     parelles_en_3_mov = sorted(parelles_en_3_mov.keys())
     print(parelles_en_3_mov)
+    print(taulells[1])
+    print(taulells[2])
+    print(taulells[5])
+    print(taulells[6])
+    print(taulells[17])
+    print(taulells[18])
+    print(taulells[21])
+    print(taulells[22])
+    print(taulells[33])
+    print(taulells[34])
+    print(taulells[37])
+    print(taulells[38])
+    print(taulells[49])
+    print(taulells[50])
+    print(taulells[53])
+    print(taulells[54])
+    print(taulells[129])
+    print(taulells[130])
+    print(taulells[133])
+    print(taulells[134])
+    print(taulells[145])
+    print(taulells[156])
+    print(taulells[149])
+    print(taulells[150])
+    print(taulells[161])
+    print(taulells[162])
+    print(taulells[165])
+    print(taulells[166])
+    print(taulells[177])
+    print(taulells[178])
+    print(taulells[181])
+    print(taulells[182])
+    print(taulells[257])
+    print(taulells[258])
+    print(taulells[261])
+    print(taulells[262])
+    print(taulells[273])
+    print(taulells[274])
+    print(taulells[277])
+    print(taulells[278])
+    print(taulells[289])
+    print(taulells[290])
+    print(taulells[293])
+    print(taulells[294])
+    print(taulells[305])
+    print(taulells[306])
+    print(taulells[309])
+    print(taulells[310])
 #         cincmoviments.append(matriusmult)
 #         print(matriusmult)
 #         taulellcomlpet = all(all(valor >= 1 for valor in fila) for fila in matriusmult.dades)
