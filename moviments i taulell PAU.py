@@ -4,22 +4,22 @@ import matplotlib.pyplot as plt
 from typing import List, Tuple
 
 #aquí a sota trobareu els quadrts de prova i un taulel de proves per poder usar en les diferens funcions.
-
-quadrat1 = [[(2,'y'),(1,'w'),(1,'b')],
-            [(2,'w'),(2,'g'),(2,'r')],
-            [(4,'p'),(6,'g'),(4,'w')]]
-
-quadrat2 = [[(3,'p'),(3,'y'),(3,'g')],
-            [(2,'p'),(4,'r'),(5,'g')],
-            [(5,'p'),(6,'r'),(4,'b')]]
-
-quadrat3 = [[(5,'w'),(4,'g'),(3,'b')],
-            [(3,'w'),(4,'y'),(3,'r')],
-            [(2,'b'),(6,'b'),(6,'w')]]
-
-quadrat4 = [[(1,'g'),(1,'r'),(6,'p')],
-            [(5,'r'),(5,'b'),(5,'y')],
-            [(1,'y'),(6,'y'),(1,'p')]]
+# 
+# # quadrat1 = [[(2,'y'),(1,'w'),(1,'b')],
+# #             [(2,'w'),(2,'g'),(2,'r')],
+# #             [(4,'p'),(6,'g'),(4,'w')]]
+# # 
+# # quadrat2 = [[(3,'p'),(3,'y'),(3,'g')],
+# #             [(2,'p'),(4,'r'),(5,'g')],
+# #             [(5,'p'),(6,'r'),(4,'b')]]
+# # 
+# # quadrat3 = [[(5,'w'),(4,'g'),(3,'b')],
+# #             [(3,'w'),(4,'y'),(3,'r')],
+# #             [(2,'b'),(6,'b'),(6,'w')]]
+# # 
+# # quadrat4 = [[(1,'g'),(1,'r'),(6,'p')],
+# #             [(5,'r'),(5,'b'),(5,'y')],
+# #             [(1,'y'),(6,'y'),(1,'p')]]
 
 # taulell = Taulell([Quadrat([[(2,'y'),(1,'w'),(1,'b')],
 #             [(2,'w'),(2,'g'),(2,'r')],
@@ -37,6 +37,13 @@ def organitzaquadrats(quadrat1,quadrat2,quadrat3,quadrat4):
     taulell = []
     taulell = [quadrat1[0], quadrat2[0],quadrat1[1],quadrat2[1],quadrat1[2],quadrat2[2],quadrat3[0],quadrat4[0],quadrat3[1],quadrat4[1],quadrat3[2],quadrat4[2]]
     return taulell
+
+#La part de dalt serveix per organitzar un taulell amb quadrats de 3 caselles per 3 caselles.
+
+#La part de baix serveix per organitzar un taulell amb quadrats de 8 caselles per 8 caselles.
+# 
+#     taulell = [quadrat1[0], quadrat2[0],quadrat1[1],quadrat2[1],quadrat1[2],quadrat2[2],quadrat1[3],quadrat2[3],quadrat3[0],quadrat4[0],quadrat3[1],quadrat4[1],quadrat3[2],quadrat4[2],quadrat3[3],quadrat4[3]]
+#     return taulell
 
 def rota_quadrat(quadrat: List[List[Tuple[int, str]]]) -> List[List[Tuple[int, str]]]:
      temp_matrix = []
@@ -163,6 +170,26 @@ class Taulell():
                     else:
                         fila_nova.append(llista_quadrats[3].llista[i - 3][j - 3])
             self.dades.append(fila_nova)
+            
+#La part de dalt serveix per representar un taulell de 6 per 6 caselles.
+
+#La part de baix serveix per representar un taulell de 8 per 8 caselles.
+
+#         for i in range(8):
+#             fila_nova = []
+#             for j in range(8):
+#                 if i < 4:
+#                     if j < 4:
+#                         fila_nova.append(llista_quadrats[0].llista[i][j])
+#                     else:
+#                         fila_nova.append(llista_quadrats[1].llista[i][j - 4])
+#                 else:
+#                     if j < 4:
+#                         fila_nova.append(llista_quadrats[2].llista[i - 4][j])
+#                     else:
+#                         fila_nova.append(llista_quadrats[3].llista[i - 4][j - 4])
+#             self.dades.append(fila_nova)
+
 
     def __repr__(self):
         resultat = ''
@@ -175,6 +202,21 @@ class Taulell():
                 resultat += '\n' + '-'*(3*6+2)
             resultat += '\n'
         return resultat
+
+#La part de dalt serveix per representar un taulell de 6 per 6 caselles.
+
+#La part de baix serveix per representar un taulell de 8 per 8 caselles.
+# 
+#         resultat = ''
+#         for i, fila in enumerate(self.dades):
+#             for j, cella in enumerate(fila):
+#                 resultat += f'{cella[0]}{cella[1]}' + ' '
+#                 if j == 3:
+#                     resultat += '| '
+#             if i == 3:
+#                 resultat += '\n' + '-'*(4*6+2)
+#             resultat += '\n'
+#         return resultat
 
     def mou_primera_fila_a_ultima(self):
         primera_fila = self.dades.pop(0)
@@ -234,6 +276,7 @@ class Matriu():
 
 def dividir_matriu(matriu):
     return [matriu[i:i + 36] for i in range(0, len(matriu), 36)]
+#     return [matriu[i:i + 64] for i in range(0, len(matriu), 64)]#Crear matriu de 64 per 64, per un taulell de 8 per 8.
 
 
 def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
@@ -252,6 +295,7 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
     rankfacilitat = {}
     taulellsjugablesamb5mov = []
     parelles_en_3_mov = {}
+    caselles_per_comptador_anterior = []
 #     while len(taulellsfallats) < 1:
 #         taulell_nou = crea_taulell(quadrat1,quadrat2,quadrat3,quadrat4)
 #         if taulell_nou not in taulells:
@@ -287,19 +331,25 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
                     parelles_en_3_mov[caselles_per_comptador[3]].append(taulell)
                 else:
                     parelles_en_3_mov[caselles_per_comptador[3]] = taulell
+#           ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\Gràfics Generats"
+            caselles_arribades = 0
+            comptador += 1
+#       ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\PROVA DE SIMILARS"
+        ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\PROVA AMB TAULELLS DELS GRAFICS"
+#         ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\Gràfics 8X8"
+        if caselles_per_comptador not in caselles_per_comptador_anterior:
             x = caselles_per_comptador.keys()
             y = caselles_per_comptador.values()
             plt.clf() 
             plt.bar(x, y)
             plt.xlim(0, 7)  
-            plt.ylim(0, 800)  
+            plt.ylim(0, 800)
+#             plt.xlim(0, 10)
+#             plt.ylim(0, 1400)
             plt.xlabel("Moviments")
             plt.ylabel("Parelles de caselles")
-
-            ruta_carpeta = "C:\\Users\\rserrano\\OneDrive\\Documentos\\GitHub\\Treball-recerca\\Gràfics Generats"
             plt.savefig(ruta_carpeta + '\\grafico'+str(matriusno)+'.png')
-            caselles_arribades = 0
-            comptador += 1
+        caselles_per_comptador_anterior += [caselles_per_comptador]
         matriu_completa = dividir_matriu(matriu_completa.tolist())
         comptador -= 1
         print("Comptador: ",comptador)
@@ -310,6 +360,54 @@ def estudi_taulell_moviments(quadrat1,quadrat2,quadrat3,quadrat4):
         print(parelles_en_3_mov)
     parelles_en_3_mov = sorted(parelles_en_3_mov.keys())
     print(parelles_en_3_mov)
+    print(taulells[1])
+    print(taulells[2])
+    print(taulells[5])
+    print(taulells[6])
+    print(taulells[17])
+    print(taulells[18])
+    print(taulells[21])
+    print(taulells[22])
+    print(taulells[33])
+    print(taulells[34])
+    print(taulells[37])
+    print(taulells[38])
+    print(taulells[49])
+    print(taulells[50])
+    print(taulells[53])
+    print(taulells[54])
+    print(taulells[129])
+    print(taulells[130])
+    print(taulells[133])
+    print(taulells[134])
+    print(taulells[145])
+    print(taulells[156])
+    print(taulells[149])
+    print(taulells[150])
+    print(taulells[161])
+    print(taulells[162])
+    print(taulells[165])
+    print(taulells[166])
+    print(taulells[177])
+    print(taulells[178])
+    print(taulells[181])
+    print(taulells[182])
+    print(taulells[257])
+    print(taulells[258])
+    print(taulells[261])
+    print(taulells[262])
+    print(taulells[273])
+    print(taulells[274])
+    print(taulells[277])
+    print(taulells[278])
+    print(taulells[289])
+    print(taulells[290])
+    print(taulells[293])
+    print(taulells[294])
+    print(taulells[305])
+    print(taulells[306])
+    print(taulells[309])
+    print(taulells[310])
 #         cincmoviments.append(matriusmult)
 #         print(matriusmult)
 #         taulellcomlpet = all(all(valor >= 1 for valor in fila) for fila in matriusmult.dades)
