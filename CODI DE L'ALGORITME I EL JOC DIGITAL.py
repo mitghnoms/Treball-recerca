@@ -10,7 +10,7 @@ def organitzaquadrats(quadrat1,quadrat2,quadrat3,quadrat4):
 
 #La part de dalt serveix per organitzar un taulell amb quadrats de 3 caselles per 3 caselles.
 
-#La part de baix serveix per organitzar un taulell amb quadrats de 8 caselles per 8 caselles.
+#La part de baix serveix per organitzar un taulell amb quadrats de 4 caselles per 4 caselles.
 
 #     taulell = [quadrat1[0], quadrat2[0],quadrat1[1],quadrat2[1],quadrat1[2],quadrat2[2],quadrat1[3],quadrat2[3],quadrat3[0],quadrat4[0],quadrat3[1],quadrat4[1],quadrat3[2],quadrat4[2],quadrat3[3],quadrat4[3]]
 #     return taulell
@@ -352,7 +352,7 @@ def torn_microrobots(jugador) -> str:
             print('No has respost res o has respost incorrectament a la última pregunta, fins aviat!')
             exit()
     
-#Aquí a sota trobareu les funcions noves qu hem creat exclusivament per fer l'algoritme.
+#Aquí a sota trobareu les funcions noves que hem creat exclusivament per fer l'algoritme.
 
 def troba_moviments(matriu):
     casella_mov_possible = -1
@@ -397,7 +397,7 @@ def canvia_casella_per_num_2(caselles, taulell):
 
 
 def aplanar_llista(llista):
-    # Usamos una comprensión de listas para aplanar la lista
+    
     return [element for subllista in llista for element in (aplanar_llista(subllista) if isinstance(subllista, list) else [subllista])]    
     
 def codi_guanyador3(taulell, casella_inicial, casella_final):
@@ -460,7 +460,7 @@ def codi_guanyador3(taulell, casella_inicial, casella_final):
 #         [(3,'w'),(4,'y'),(3,'r')],
 #         [(2,'b'),(6,'b'),(6,'w')]],[[(1,'g'),(1,'r'),(6,'p')],
 #         [(5,'r'),(5,'b'),(5,'y')],
-#         [(1,'y'),(6,'y'),(1,'p')]]),(6,'g'),(5,'r'))
+#         [(1,'y'),(6,'y'),(1,'p')]]),(6,'g'),(3,'y'))
     
 #prova amb el tauell de 8 per 8.   
 
